@@ -81,7 +81,8 @@ export const playAudio = ({ audioFile, bgColor, waveColor, src, setSrc, setWebmV
     canvasContext.fillText(audioFile.name, 30, 40)
 
     canvasContext.textAlign = 'right'
-    canvasContext.font = "10px 'sans-serif'"
+    canvasContext.font = "12px 'sans-serif'"
+    canvasContext.fillText('波形動画メーカー (Audio Urchin) ver. 0.0.1', canvas.width - 30, canvas.height - 50)
     canvasContext.fillText('comorebi notes', canvas.width - 30, canvas.height - 30)
 
     animationId = requestAnimationFrame(render)
