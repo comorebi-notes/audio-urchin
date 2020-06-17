@@ -1,24 +1,12 @@
 import React from 'react'
-import logo from '../assets/images/logo.svg'
-import './App.sass'
+import * as utils from '../utils'
 
 const App = () => (
-  <div className="App">
-    <header className="App-header">
-      <img src={logo} className="App-logo" alt="logo" />
-      <p>
-        Edit <code>src/App.js</code> and save to reload.
-      </p>
-      <a
-        className="App-link"
-        href="https://reactjs.org"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Learn React
-      </a>
-    </header>
-  </div>
+  <main className="container py-8">
+    <button type="button" className="btn btn-primary" onClick={utils.audio}>
+      再生
+    </button>
+  </main>
 )
 
 export default App
