@@ -11,7 +11,7 @@ export const playAudio = ({ audioFile, bgColor, waveColor, src, setSrc, setVideo
 
   const canvas = document.getElementById('visualizer')
   const canvasContext = canvas.getContext('2d')
-  canvas.setAttribute('width', 850)
+  canvas.setAttribute('width', 825)
   canvas.setAttribute('height', 640)
 
   const canvasStream = canvas.captureStream()
@@ -47,7 +47,7 @@ export const playAudio = ({ audioFile, bgColor, waveColor, src, setSrc, setVideo
         mediaRecorder.stop()
         const video = new Blob(chunks, { type: mimeType })
         console.log(video)
-        setVideo(window.URL.createObjectURL(video))
+        setVideo(video)
       }, 100)
     })
   }
@@ -70,11 +70,11 @@ export const playAudio = ({ audioFile, bgColor, waveColor, src, setSrc, setVideo
 
     canvasContext.textAlign = 'left'
     canvasContext.font = "20px 'sans-serif'"
-    canvasContext.fillText(audioFile.name, 40, 40)
+    canvasContext.fillText(audioFile.name, 30, 40)
 
     canvasContext.textAlign = 'right'
     canvasContext.font = "10px 'sans-serif'"
-    canvasContext.fillText('comorebi notes', canvas.width - 20, canvas.height - 30)
+    canvasContext.fillText('comorebi notes', canvas.width - 30, canvas.height - 30)
 
     animationId = requestAnimationFrame(render)
   }
