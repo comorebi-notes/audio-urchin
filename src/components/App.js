@@ -8,14 +8,15 @@ const App = () => {
   const [waveColor, setWaveColor] = useState('#22ccdd')
   const handleWaveColor = (e) => setWaveColor(e.target.value)
 
-  const [src, setSrc] = useState(0)
+  const [src, setSrc] = useState()
+  const [video, setVideo] = useState()
 
   const [audioFile, setAudioFile] = useState()
   const selectAudioFile = (e) => setAudioFile(e.target.files.item(0))
   useEffect(() => {
     if (!audioFile) return
-    utils.playAudio({ audioFile, bgColor, waveColor, src, setSrc })
-  }, [audioFile, bgColor, waveColor])
+    utils.playAudio({ audioFile, bgColor, waveColor, src, setSrc, setVideo })
+  }, [audioFile, bgColor, waveColor]) // eslint-disable-line
 
   return (
     <main className="py-10 row">
@@ -53,6 +54,12 @@ const App = () => {
           </div>
         </section>
         <canvas id="visualizer" className="visualiser" height="640" />
+        {video && (
+          <a href={video} className="btn btn-primary btn-block" target="_blank" rel="noopener noreferrer">
+            <i className="fa fa-download mr-1" />
+            ダウンロード
+          </a>
+        )}
       </div>
     </main>
   )
