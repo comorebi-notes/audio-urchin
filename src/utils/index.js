@@ -1,4 +1,12 @@
-export const playAudio = ({ audioFile, bgColor, waveColor, src, setSrc, setVideo }) => {
+const MIMETYPE_LIST = [
+  'video/webm;codecs=h264',
+  'video/webm;codecs=vp9',
+  'video/webm;codecs=vp8',
+  'video/webm',
+  'video/mp4'
+]
+
+export const playAudio = ({ audioFile, bgColor, waveColor, src, setSrc, setWebmVideo }) => {
   const audioContext = new (window.AudioContext || window.webkitAudioContext)()
   const destination = audioContext.createMediaStreamDestination()
   const fileReader = new FileReader()
@@ -47,7 +55,7 @@ export const playAudio = ({ audioFile, bgColor, waveColor, src, setSrc, setVideo
         mediaRecorder.stop()
         const video = new Blob(chunks, { type: mimeType })
         console.log(video)
-        setVideo(video)
+        setWebmVideo(video)
       }, 100)
     })
   }
@@ -80,10 +88,8 @@ export const playAudio = ({ audioFile, bgColor, waveColor, src, setSrc, setVideo
   }
 }
 
-const MIMETYPE_LIST = [
-  'video/webm;codecs=h264',
-  'video/webm;codecs=vp9',
-  'video/webm;codecs=vp8',
-  'video/webm',
-  'video/mp4'
-]
+// export const convertWebmToMp4 = (webmVideo) => {
+//   const worker = new Worker('https://archive.org/download/ffmpeg_asm/ffmpeg_asm.js')
+//   console.log(worker)
+// }
+//
