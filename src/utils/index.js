@@ -9,7 +9,6 @@ const MIMETYPE_LIST = [
 export const playAudio = ({ audioFile, bgColor, waveColor, src, setSrc, setWebmVideo }) => {
   const audioContext = new (window.AudioContext || window.webkitAudioContext)()
   const destination = audioContext.createMediaStreamDestination()
-  const fileReader = new FileReader()
   const chunks = []
   let animationId
 
@@ -32,34 +31,32 @@ export const playAudio = ({ audioFile, bgColor, waveColor, src, setSrc, setWebmV
   const mediaRecorder = new MediaRecorder(mediaStream, { mimeType })
   mediaRecorder.addEventListener('dataavailable', (e) => chunks.push(e.data))
 
-  fileReader.onload = () => {
-    audioContext.decodeAudioData(fileReader.result, (buffer) => {
-      if (src) {
-        src.stop()
-        cancelAnimationFrame(animationId)
-      }
+  const blob = URL.createObjectURL(audioFile)
+  const audioElement = new Audio(blob)
+  const source = audioContext.createMediaElementSource(audioElement)
 
-      const tempSrc = audioContext.createBufferSource()
-      setSrc(tempSrc)
+  audioElement.playbackRate = 1;
 
-      tempSrc.buffer = buffer
-      tempSrc.connect(analyser)
-      tempSrc.connect(destination)
+  audioElement.onloadstart = () => {
+    source.connect(analyser)
+    source.connect(destination)
 
-      mediaRecorder.start(100)
-      tempSrc.start(0)
+    if (audioElement.paused) {
+      mediaRecorder.start(0)
+      audioElement.play()
+      render();
+    } else {
+      audioElement.pause()
+      cancelAnimationFrame(animationId)
+    }
+  };
 
-      animationId = requestAnimationFrame(render)
-
-      tempSrc.onended = () => setTimeout(() => {
-        mediaRecorder.stop()
-        const video = new Blob(chunks, { type: mimeType })
-        console.log(video)
-        setWebmVideo(video)
-      }, 100)
-    })
-  }
-  fileReader.readAsArrayBuffer(audioFile)
+  audioElement.onended = () => {
+    mediaRecorder.stop()
+    const video = new Blob(chunks, { type: mimeType })
+    console.log(video)
+    setWebmVideo(video)
+  };
 
   const render = () => {
     const spectrums = new Uint8Array(analyser.frequencyBinCount)
